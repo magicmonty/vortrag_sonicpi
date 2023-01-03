@@ -1,0 +1,102 @@
+\newif\ifbeamer@circularprogress
+
+\beamer@circularprogressfalse
+
+\DeclareOptionBeamer{circularprogress}[true]{\csname beamer@circularprogress#1\endcsname}
+\ProcessOptionsBeamer{}
+
+\mode<presentation>
+
+\defbeamertemplate*{frametitle}{Bayoo}[1][] {
+  \vskip0.5em%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1.2cm,#1]{frametitle}
+    \begin{tikzpicture}
+      \usebeamercolor{background canvas}\useasboundingbox[fill=bg] (0, 0) rectangle(\paperwidth, 1.2cm);
+      \usebeamercolor{palette primary}\fill[fg] (0.25cm, 0) rectangle(0.3cm, 1.2cm);
+      \ifx\insertframesubtitle\@empty%
+        {
+          \usebeamercolor{frametitle}
+          \node[anchor=west, fg] at (0.4cm, 0.61cm){\usebeamerfont{frametitle}\insertframetitle};
+        }
+      \else%
+        {
+          \usebeamercolor{frametitle}
+          \node[anchor=west, fg] at (0.4cm, 0.86){\usebeamerfont{frametitle}\insertframetitle};%
+          \usebeamercolor{framesubtitle}
+          \node[anchor=west, fg] at (0.4cm, 0.41){\usebeamerfont{framesubtitle}\insertframesubtitle};%
+        }
+      \fi
+    \end{tikzpicture}
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{sidebar right}{}
+
+\newcommand\insertpaddedframenumber{\ifnum\inserttotalframenumber<10{\insertframenumber}\else{\ifnum\inserttotalframenumber<100{\ifnum\insertframenumber<10{0}\fi\insertframenumber}\else{\ifnum\insertframenumber<10{00}\else{\ifnum\insertframenumber<100{0}\fi}\fi\insertframenumber}\fi}\fi}
+
+\newcounter{totalvalue}
+\newcounter{currentvalue}
+
+\def\aux{1}
+\def\radius{0.5cm}
+\def\step{8pt}
+
+\newcommand\circcounter{%
+  \ifnum\inserttotalframenumber<2%
+    \relax%
+  \else
+    \setcounter{totalvalue}{\inserttotalframenumber}
+    \setcounter{currentvalue}{\insertframenumber}
+    \ifnum\inserttotalframenumber>45\relax
+      \renewcommand\step{0pt}
+    \fi%
+    \pgfmathsetmacro{\aux}{360/\thetotalvalue}
+    \begin{tikzpicture}[remember picture,overlay,rotate=90+\aux]
+      % Upcoming frames
+      \usebeamercolor{progress upcoming}%
+      \foreach \i in {0,1,...,\thetotalvalue}
+        \fill[fg] (0,0) -- (-\i*\aux:\radius) arc  (-\i*\aux:-(\i+1)*\aux+\step:\radius) -- cycle;
+%
+      % Previous frames
+      \usebeamercolor{progress done}%
+      \foreach \i in {1,...,\insertframenumber}
+        \fill[fg] (0,0) -- (-\i*\aux:\radius) arc  (-\i*\aux:-(\i+1)*\aux+\step:\radius) -- cycle;
+%
+      % Current frame
+      \usebeamercolor{progress current}%
+      \foreach \i in {\insertframenumber,...,\insertframenumber}
+        \fill[fg] (0,0) -- (-\i*\aux:\radius) arc  (-\i*\aux:-(\i+1)*\aux+\step:\radius) -- cycle;
+%
+      % inner circle
+      \usebeamercolor{background canvas}\fill[bg] circle (\radius/1.25);
+%
+      % Frame number as text
+      \node[anchor=mid] at (0,0) {\begin{beamercolorbox}[wd=1cm,ht=2.25ex,dp=1ex,center,ignorebg]{pagenumber in progress}
+        \vspace*{-2pt}%
+        \usebeamerfont{pagenumber}\insertpaddedframenumber%
+      \end{beamercolorbox}};
+    \end{tikzpicture}%
+  \fi%
+}
+
+\defbeamertemplate*{footline}{Bayoo}[1][]{
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1.2cm,#1]{footline}
+    \begin{tikzpicture}
+      \usebeamercolor{background canvas}\useasboundingbox[fill=bg] (0, 0) rectangle(\paperwidth, 1.2cm);
+      \usebeamercolor{palette primary}\fill[fg] (0.25cm, 0) rectangle(0.3cm, 1.2cm);
+      \node[anchor=west] at (0.4cm, 0.61cm) {\insertlogo};
+      \ifbeamer@circularprogress
+        \node[anchor=east] at (\paperwidth-0.8cm, 0.7cm) {\circcounter};
+      \else
+        \usebeamercolor{palette primary}\fill[fg] (\paperwidth-1.25cm, 0) rectangle(\paperwidth-1.3cm, 1.2cm);
+        \usebeamercolor{pagenumber}
+        \node[anchor=east, fg] at (\paperwidth-0.2cm, 0.81cm) {\usebeamerfont{pagenumber}page};
+        \node[anchor=east, fg] at (\paperwidth-0.2cm, 0.41cm) {\usebeamerfont{pagenumber}\insertpaddedframenumber};
+      \fi
+    \end{tikzpicture}%
+  \end{beamercolorbox}
+  \vskip0.5em%
+}
+
+\mode<all>

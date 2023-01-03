@@ -1,0 +1,41 @@
+\mode<presentation>
+
+% Items
+\setbeamertemplate{items}[circle]
+\setbeamertemplate{sections/subsections in toc}[square]
+
+\defbeamertemplate*{title page}{Bayoo}[1][] {
+  \vbox{}
+  \vfill
+  \begingroup
+    \begin{beamercolorbox}[wd=\textwidth,sep=8pt,#1]{title}
+      \centering\usebeamerfont{title}\inserttitle\par%
+    \end{beamercolorbox}
+    \ifx\insertsubtitle\@empty
+      \relax%
+    \else
+    \begin{beamercolorbox}[wd=\textwidth,sep=8pt,#1]{subtitle}
+        \centering\usebeamerfont{subtitle}\insertsubtitle\par%
+      \end{beamercolorbox}
+    \fi
+    \ifx\insertauthor\@empty
+      \relax%
+    \else
+      \begin{beamercolorbox}[wd=\textwidth,#1]{author}
+        \centering\usebeamerfont{author}\insertauthor%
+      \end{beamercolorbox}
+    \fi
+    \ifx\insertdate\@empty
+      \relax%
+    \else
+      \begin{beamercolorbox}[wd=\textwidth,#1]{date}
+        \centering\usebeamerfont{date}\insertdate%
+      \end{beamercolorbox}
+    \fi
+  \endgroup
+  \vfill
+}
+
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+\mode<all>

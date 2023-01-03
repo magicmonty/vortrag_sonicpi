@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+rm -rf scale
+lilypond-book --pdf --output scale scale.lytex
+mv scale/23/*.pdf images/scale.pdf
+rm -rf scale

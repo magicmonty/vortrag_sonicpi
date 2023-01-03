@@ -1,0 +1,8 @@
+  \begin{lilypond}[quote,fragment,staffsize=26]
+    \numericTimeSignature
+    \clef treble
+    { c'4 d' e' f' g' a' b' c'' }
+    \addlyrics { "C4" "D4" "E4" "F4" "G4" "A4" "B4" "C5" }
+    \addlyrics { "60" "62" "64" "65" "67" "69" "71" "72" }
+  \end{lilypond}
+
