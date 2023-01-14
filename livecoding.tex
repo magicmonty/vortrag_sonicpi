@@ -168,58 +168,67 @@
 \begin{frame}{Sonic Pi}{Basics}
   \includegraphics{images/scale.pdf}
 \end{frame}
-\addtocounter{framenumber}{-1}
 
 \begin{frame}[fragile]{Sonic Pi}{Basics}
   \begin{rubycode}
-    # Note C4
+
+    # spielt die Note C4 mit dem aktuell ausgewählten Instrument
     play :C4
-  \end{rubycode}
-\end{frame}
-\addtocounter{framenumber}{-1}
+    play 60 # das Selbe, nur in MIDI notation
 
-\begin{frame}[fragile]{Sonic Pi}{Basics}
-  \begin{rubycode}
-    # Note C4
-    play :C4
-
-    # Das selbe, nur in MIDI notation
-    play 60
-  \end{rubycode}
-\end{frame}
-\addtocounter{framenumber}{-1}
-
-\begin{frame}[fragile]{Sonic Pi}{Basics}
-  \begin{rubycode}
-    # Note C4
-    play :C4
-
-    # Das selbe, nur in MIDI notation
-    play 60
-
-    # Mehrere Noten (Akkord) gleichzeitig
-    play :C4
-    play :E4
-    play :G4
-  \end{rubycode}
-\end{frame}
-\addtocounter{framenumber}{-1}
-
-\begin{frame}[fragile]{Sonic Pi}{Basics}
-  \begin{rubycode}
-    # Note C4
-    play :C4
-
-    # Das selbe, nur in MIDI notation
-    play 60
-
-    # Mehrere Noten (Akkord) gleichzeitig
+    # spielt mehrere Noten (Akkord) gleichzeitig
     play :C4
     play :E4
     play :G4
 
-    # Das selbe nur als einzelner Befehl
-    play_chord(:C4, :major)
+    # spielt die Noten nacheinander ab (1/4 Noten)
+    play :C4
+    sleep 0.25
+    play :E4
+    sleep 0.25
+    play :G4
+    sleep 0.25
+
+  \end{rubycode}
+\end{frame}
+
+\subsection{Zufall/Randomisierung}
+\begin{frame}[fragile]{Sonic Pi}{Zufall/Randomisierung}
+  \begin{rubycode}
+
+    # Zufallswerte
+    rand()          # Zufallszahl zwischen 0.0 und 1.0
+    rand(0.5)       # Zufallszahl zwischen 0.0 und 0.5
+    rand(0.1..0.8)  # Zufallszahl zwischen 0.1 and 0.8
+    rand_i(5)       # Zufällige Ganzzahl (eine von 0, 1, 2, 3, 4)
+    rdist(1, 0)     # Zufallszahl zwischen -1.0 und 1.0
+    rrand(6, 10.5)  # Zufallszahl zwischen 6.0 und 10.5 inklusive
+    rrand_i(6, 10)  # Zufällige Ganzzahl zwischen 6 and 10 inklusive
+    dice            # würfelt (6-seitiger Würfel) (1-6 inklusive)
+    dice(3)         # würfelt (3-seitiger Würfel)
+    one_in(3)       # true mit Wahrscheinlichkeit von 1/3
+
+    # Listen-Operatoren
+    [1, 2, 3].pick(2)   # Wählt 2 zufällige Einträge aus der Liste
+    [1, 2, 3].shuffle   # Liste mischen
+    [60, 64, 67].choose # Zufälligen Eintrag auswählen
+
+  \end{rubycode}
+\end{frame}
+
+\subsubsection{Beispiele}
+\begin{frame}[fragile]{Sonic Pi}{Zufall/Randomisierung --- Beispiele}
+  \begin{rubycode}
+
+    # zufällige Note des A-moll Akkords spielen
+    play chord(:A4, :minor).choose
+
+    # Sample mit einer Wahrscheinlichkeit von 50% (1/2) abspielen
+    sample :drum_cymbal_pedal if one_in(2)
+
+    # spielt das Sample mit einer zufälligen Lautstärke
+    sample :drum_cymbal_pedal, amp: rand(0.4..0.8)
+
   \end{rubycode}
 \end{frame}
 
@@ -236,11 +245,6 @@
   \framesubtitle{Live Loop}
 \end{frame}
 
-\subsection{Zufall/Randomisierung}
-\begin{frame}
-  \frametitle{Konzepte}
-  \framesubtitle{Zufall/Randomisierung}
-\end{frame}
 
 \subsection{Euklidische Patterns}
 \begin{frame}
