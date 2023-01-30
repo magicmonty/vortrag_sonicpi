@@ -42,6 +42,17 @@
 \end{frame}
 \addtocounter{framenumber}{-1}
 
+\begin{frame}[plain]
+  \renewcommand{\epigraphflush}{center}
+  \epigraph{
+    \usebeamercolor{palette primary}
+    \textbf{\textcolor{fg}{Live}} coding music, \\
+    \textbf{\textcolor{fg}{Electronic}} notes dance and flow, \\
+    \textbf{\textcolor{fg}{Algorithms}} sing.
+  }{\usebeamercolor{palette secondary}\textcolor{fg}{\textit{Haiku by Chat GPT}}}
+\end{frame}
+\addtocounter{framenumber}{-1}
+
 \begin{frame}
   \frametitle{Über mich}
   \begin{columns}
@@ -98,6 +109,15 @@
 \subsection{Definition}
 \begin{frame}
   \frametitle{Was ist Live Coding?}
+  \framesubtitle{Definition}
+  The Live Coder creates and manipulates source code live in front of an audience.
+
+  \vspace{1ex}
+  He combines code, music and visuals into a synaestetic performance.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Was ist Live Coding?}
   \framesubtitle{TOPLAP}
   \small
   \begin{itemize}
@@ -110,30 +130,21 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Was ist Live Coding?}
-  \framesubtitle{Definition}
-  The Live Coder creates and manipulates source code live in front of an audience.
-
-  \vspace{1ex}
-  He combines code, music and visuals into a synaestetic performance.
-\end{frame}
-
-\begin{frame}
-  \frametitle{Was ist Live Coding?}
-  \framesubtitle{Definition}
-  \renewcommand{\epigraphflush}{center}
-  \epigraph{
-    \usebeamercolor{palette primary}
-    \textbf{\textcolor{fg}{Live}} coding music, \\
-    \textbf{\textcolor{fg}{Electronic}} notes dance and flow, \\
-    \textbf{\textcolor{fg}{Algorithms}} sing.
-  }{\usebeamercolor{palette secondary}\textcolor{fg}{\textit{Haiku by Chat GPT}}}
-\end{frame}
-
 \section{Geschichte}
 \begin{frame}
   \frametitle{Geschichte}
+  \begin{itemize}
+    \item 80er Jahre
+      \begin{itemize}
+        \item HMSL --- Forth basierte Sprache mit MIDI input/output
+        \item 1985: die erste dokumentierte Live Coding Performance: Ron Kuivila STEIM Amsterdam
+      \end{itemize}
+    \item 2000+
+      \begin{itemize}
+        \item 2000: premiere von slub (Live Coding Band)
+        \item 2004: Gründung von TOPLAP \\ (\textbf{T}errestrial \textbf{O}rganisation for the \textbf{P}ragmatics of \textbf{L}ive \textbf{A}lgorithm \textbf{P}rogramming)
+      \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \section{Live Coding Systeme}
@@ -161,6 +172,9 @@
       \item Sonic Pi (Ruby)
     \end{itemize}
   \end{columns}
+  \centering
+  \vspace{1em}
+  \url{https://github.com/toplap/awesome-livecoding}
 \end{frame}
 
 \section{Sonic Pi}
@@ -192,6 +206,77 @@
   \end{rubycode}
 \end{frame}
 
+\defverbatim[colored]\envelopeReleaseExample{
+  \begin{rubycode}
+    play 60, release: 2
+  \end{rubycode}
+}
+
+\defverbatim[colored]\envelopeAttackReleaseExample{
+  \begin{rubycode}
+    play 60, attack: 0.7, release: 2
+  \end{rubycode}
+}
+
+\defverbatim[colored]\envelopeAttackSustainReleaseExample{
+  \begin{rubycode}
+    play 60, attack: 0.3, sustain: 1, release: 1
+  \end{rubycode}
+}
+
+\defverbatim[colored]\envelopeAttackDecaySustainReleaseExample{
+  \begin{rubycode}
+    play 60,
+      attack: 0.1, attack_level: 1,
+      decay: 0.2,
+      sustain: 1, sustain_level: 0.4,
+      release: 0.5
+  \end{rubycode}
+}
+
+\subsection{Hüllkurven}
+\begin{frame}
+  \frametitle{Sonic Pi}
+  \framesubtitle{Hüllkurven}
+  \centering
+  \only<1>{
+    \Large{Release}
+
+    \vspace{2em}
+
+    \includegraphics[width=\textwidth]{images/env-release.png}
+
+    \envelopeReleaseExample{}
+  }
+  \only<2>{
+    \Large{Attack---Release}
+
+    \vspace{2em}
+
+    \includegraphics[width=\textwidth]{images/env-attack-release.png}
+
+    \envelopeAttackReleaseExample{}
+  }
+  \only<3>{
+    \Large{Attack---Sustain---Release}
+
+    \vspace{2em}
+
+    \includegraphics[width=\textwidth]{images/env-attack-sustain-release.png}
+
+    \envelopeAttackSustainReleaseExample{}
+  }
+  \only<4>{
+    \Large{Attack---Decay---Sustain---Release}
+
+    \vspace{1em}
+
+    \includegraphics[width=\textwidth]{images/env-attack-decay-sustain-release.png}
+
+    \envelopeAttackDecaySustainReleaseExample{}
+  }
+\end{frame}
+
 \subsection{Zufall/Randomisierung}
 \begin{frame}[fragile]{Sonic Pi}{Zufall/Randomisierung}
   \begin{rubycode}
@@ -207,11 +292,6 @@
     dice            # würfelt (6-seitiger Würfel) (1-6 inklusive)
     dice(3)         # würfelt (3-seitiger Würfel)
     one_in(3)       # true mit Wahrscheinlichkeit von 1/3
-
-    # Listen-Operatoren
-    [1, 2, 3].pick(2)   # Wählt 2 zufällige Einträge aus der Liste
-    [1, 2, 3].shuffle   # Liste mischen
-    [60, 64, 67].choose # Zufälligen Eintrag auswählen
 
   \end{rubycode}
 \end{frame}
@@ -232,19 +312,60 @@
   \end{rubycode}
 \end{frame}
 
-\section{Konzepte}
-\subsection{Temporal Recursion}
-\begin{frame}
-  \frametitle{Konzepte}
-  \framesubtitle{Temporal recursion}
+\subsection{Datenstrukturen}
+\subsubsection{Listen}
+\begin{frame}[fragile]
+  \frametitle{Sonic Pi}
+  \framesubtitle{Datenstrukturen --- Listen}
+
+  \begin{rubycode}
+    # Liste initialisieren
+    notes = [60, 65, 67, 48]
+
+    # Zugreifen
+    puts notes[1] # gibt 65 zurück
+
+    # Listen-Operatoren
+    reversed = notes.reverse          # [48, 67, 65, 60]
+    random_note = [60, 64, 67].choose # Zufälligen Eintrag auswählen
+    two_notes = notes.pick(2)         # 2 zufällige Einträge
+    shuffled = notes.shuffle          # Liste mischen (neue Liste)
+
+  \end{rubycode}
+\end{frame}
+
+\subsubsection{Ringe}
+\begin{frame}[fragile]
+  \frametitle{Sonic Pi}
+  \framesubtitle{Datenstrukturen --- Ringe}
+
+  \begin{rubycode}
+    values = ring(52, 55, 59)   # Ring erzeugen
+    values = [52, 55, 59].ring  # Ring erzeugen aus Liste
+    values[0]                   # erstes Element (52)
+    values[2]                   # drittes Element (59)
+    values[3]                   # Überlauf, wieder erstes Element (52)
+
+    # Spezielle Ringe
+    range(1, 5)              # ring(1, 2, 3, 4)
+    range(1, 5, 0.5)         # ring(1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5)
+    bools(1, 0, true, false) # ring(true, false, true, false)
+  \end{rubycode}
+\end{frame}
+
+\subsection{Samples}
+\begin{frame}[fragile]{Sonic Pi}{Samples}
+\end{frame}
+
+\subsection{Effekte}
+\begin{frame}[fragile]{Sonic Pi}{Effekte}
 \end{frame}
 
 \subsection{Live Loop}
 \begin{frame}
-  \frametitle{Konzepte}
+  \frametitle{Sonic Pi}
   \framesubtitle{Live Loop}
 \end{frame}
-
 
 \subsection{Euklidische Patterns}
 \begin{frame}
