@@ -14,7 +14,8 @@
 \usetheme[circularprogress=true]{BayooTec}
 \usemintedstyle{one-dark}
 
-\definecolor{sourcebg}{HTML}{131a24}
+% \definecolor{sourcebg}{HTML}{131a24}
+\definecolor{sourcebg}{HTML}{232a34}
 
 \newminted{ruby}{
   fontsize=\scriptsize,
@@ -26,7 +27,7 @@
 \title{Code is Music}
 \subtitle{Eine Einführung ins Live-Coding}
 \author{Martin Gondermann}
-\date{\today}
+\date{01. Februar 2023}
 
 \setlength{\epigraphwidth}{0.5\textwidth}
 
@@ -137,12 +138,13 @@
     \item 80er Jahre
       \begin{itemize}
         \item HMSL --- Forth basierte Sprache mit MIDI input/output
-        \item 1985: die erste dokumentierte Live Coding Performance: Ron Kuivila STEIM Amsterdam
+        \pause\item 1985: die erste dokumentierte Live Coding Performance: Ron Kuivila STEIM Amsterdam
       \end{itemize}
+    \pause{}
     \item 2000+
       \begin{itemize}
         \item 2000: premiere von slub (Live Coding Band)
-        \item 2004: Gründung von TOPLAP \\ (\textbf{T}errestrial \textbf{O}rganisation for the \textbf{P}ragmatics of \textbf{L}ive \textbf{A}lgorithm \textbf{P}rogramming)
+        \pause\item 2004: Gründung von TOPLAP \\ (\textbf{T}errestrial \textbf{O}rganisation for the \textbf{P}ragmatics of \textbf{L}ive \textbf{A}lgorithm \textbf{P}rogramming)
       \end{itemize}
   \end{itemize}
 \end{frame}
@@ -158,21 +160,21 @@
         \begin{itemize}
           \item Die ``Mutter'' der meisten Live Coding Systeme
         \end{itemize}
-      \item Gibber (Web / JavaScript)
-      \item Orca (Visual~``Programming'')
-      \item Tidal Cycles (Haskell~based)
-      \item Overtone (Clojure)
+      \pause\item Gibber (Web / JavaScript)
+      \pause\item Orca (Visual~``Programming'')
+      \pause\item Tidal Cycles (Haskell~based)
+      \pause\item Overtone (Clojure)
     \end{itemize}
 
     \column{0.5\textwidth}
     \begin{itemize}
-      \item GLICOL (Rust)
-      \item FoxDot (Python)
-      \item Extempore (Scheme~based)
-      \item Sonic Pi (Ruby)
+      \pause\item GLICOL (Rust)
+      \pause\item FoxDot (Python)
+      \pause\item Extempore (Scheme~based)
+      \pause\item \textbf{Sonic Pi (Ruby)}
     \end{itemize}
   \end{columns}
-  \centering
+  \pause\centering
   \vspace{1em}
   \url{https://github.com/toplap/awesome-livecoding}
 \end{frame}
@@ -183,18 +185,25 @@
   \includegraphics{images/scale.pdf}
 \end{frame}
 
-\begin{frame}[fragile]{Sonic Pi}{Basics}
+\defverbatim[colored]\playBasic{
   \begin{rubycode}
-
     # spielt die Note C4 mit dem aktuell ausgewählten Instrument
     play :C4
     play 60 # das Selbe, nur in MIDI notation
+  \end{rubycode}
+}
 
+\defverbatim[colored]\playMulti{
+  \begin{rubycode}
     # spielt mehrere Noten (Akkord) gleichzeitig
     play :C4
     play :E4
     play :G4
+  \end{rubycode}
+}
 
+\defverbatim[colored]\playSleep{
+  \begin{rubycode}
     # spielt die Noten nacheinander ab (1/4 Noten)
     play :C4
     sleep 0.25
@@ -202,8 +211,13 @@
     sleep 0.25
     play :G4
     sleep 0.25
-
   \end{rubycode}
+}
+
+\begin{frame}[fragile]{Sonic Pi}{Basics}
+  \playBasic{}
+  \pause\playMulti{}
+  \pause\playSleep{}
 \end{frame}
 
 \defverbatim[colored]\envelopeReleaseExample{
@@ -244,7 +258,7 @@
 
     \vspace{2em}
 
-    \includegraphics[width=\textwidth]{images/env-release.png}
+    \includegraphics[width=0.5\textwidth]{images/env-release.png}
 
     \envelopeReleaseExample{}
   }
@@ -253,7 +267,7 @@
 
     \vspace{2em}
 
-    \includegraphics[width=\textwidth]{images/env-attack-release.png}
+    \includegraphics[width=0.5\textwidth]{images/env-attack-release.png}
 
     \envelopeAttackReleaseExample{}
   }
@@ -262,19 +276,61 @@
 
     \vspace{2em}
 
-    \includegraphics[width=\textwidth]{images/env-attack-sustain-release.png}
+    \includegraphics[width=0.5\textwidth]{images/env-attack-sustain-release.png}
 
     \envelopeAttackSustainReleaseExample{}
   }
   \only<4>{
     \Large{Attack---Decay---Sustain---Release}
 
-    \vspace{1em}
+    \vspace{2em}
 
-    \includegraphics[width=\textwidth]{images/env-attack-decay-sustain-release.png}
+    \includegraphics[width=0.5\textwidth]{images/env-attack-decay-sustain-release.png}
 
     \envelopeAttackDecaySustainReleaseExample{}
   }
+\end{frame}
+
+\subsection{Datenstrukturen}
+\subsubsection{Listen}
+\begin{frame}[fragile]
+  \frametitle{Sonic Pi}
+  \framesubtitle{Datenstrukturen --- Listen}
+
+  \begin{rubycode}
+    # Liste initialisieren
+    notes = [:C4, :F4, :G4, :C3]
+    notes = [60, 65, 67, 48]
+
+    # Zugreifen
+    puts notes[1] # gibt 65 zurück
+
+    # Listen-Operatoren
+    reversed = notes.reverse          # [48, 67, 65, 60]
+    random_note = [60, 64, 67].choose # Zufälligen Eintrag auswählen
+    two_notes = notes.pick(2)         # 2 zufällige Einträge
+    shuffled = notes.shuffle          # Liste mischen (neue Liste)
+
+  \end{rubycode}
+\end{frame}
+
+\subsubsection{Ringe}
+\begin{frame}[fragile]
+  \frametitle{Sonic Pi}
+  \framesubtitle{Datenstrukturen --- Ringe}
+
+  \begin{rubycode}
+    values = ring(52, 55, 59)   # Ring erzeugen
+    values = [52, 55, 59].ring  # Ring erzeugen aus Liste
+    values[0]                   # erstes Element (52)
+    values[2]                   # drittes Element (59)
+    values[3]                   # Überlauf, wieder erstes Element (52)
+
+    # Spezielle Ringe
+    range(1, 5)              # ring(1, 2, 3, 4)
+    range(1, 5, 0.5)         # ring(1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5)
+    bools(1, 0, true, false) # ring(true, false, true, false)
+  \end{rubycode}
 \end{frame}
 
 \subsection{Zufall/Randomisierung}
@@ -312,65 +368,40 @@
   \end{rubycode}
 \end{frame}
 
-\subsection{Datenstrukturen}
-\subsubsection{Listen}
-\begin{frame}[fragile]
-  \frametitle{Sonic Pi}
-  \framesubtitle{Datenstrukturen --- Listen}
-
-  \begin{rubycode}
-    # Liste initialisieren
-    notes = [60, 65, 67, 48]
-
-    # Zugreifen
-    puts notes[1] # gibt 65 zurück
-
-    # Listen-Operatoren
-    reversed = notes.reverse          # [48, 67, 65, 60]
-    random_note = [60, 64, 67].choose # Zufälligen Eintrag auswählen
-    two_notes = notes.pick(2)         # 2 zufällige Einträge
-    shuffled = notes.shuffle          # Liste mischen (neue Liste)
-
-  \end{rubycode}
-\end{frame}
-
-\subsubsection{Ringe}
-\begin{frame}[fragile]
-  \frametitle{Sonic Pi}
-  \framesubtitle{Datenstrukturen --- Ringe}
-
-  \begin{rubycode}
-    values = ring(52, 55, 59)   # Ring erzeugen
-    values = [52, 55, 59].ring  # Ring erzeugen aus Liste
-    values[0]                   # erstes Element (52)
-    values[2]                   # drittes Element (59)
-    values[3]                   # Überlauf, wieder erstes Element (52)
-
-    # Spezielle Ringe
-    range(1, 5)              # ring(1, 2, 3, 4)
-    range(1, 5, 0.5)         # ring(1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5)
-    bools(1, 0, true, false) # ring(true, false, true, false)
-  \end{rubycode}
-\end{frame}
-
 \subsection{Samples}
 \begin{frame}[fragile]{Sonic Pi}{Samples}
+  \begin{rubycode}
+    # sample abspielen
+    sample :loop_amen
+    sample :loop_amen, rate: 0.5 # halbe Geschwindigkeit
+    sample :loop_amen, rate: -1  # rückwärts
+
+    # Anpassung der Sample-Länge
+    sample :loop_amen, beat_stretch: 2
+
+    # Pitch-Anpassung
+    sample :bass_trance_c, rpitch: 2
+
+    # mit Hüllkurve
+    sample :loop_amen, attack: 0.25, release: 0.25
+
+    # partielle Samples
+    sample :loop_amen, start: 0.4, finish: 0.6
+    sample :loop_amen, start: 0.6, finish: 0.4
+
+  \end{rubycode}
 \end{frame}
 
-\subsection{Effekte}
-\begin{frame}[fragile]{Sonic Pi}{Effekte}
-\end{frame}
-
-\subsection{Live Loop}
 \begin{frame}
-  \frametitle{Sonic Pi}
-  \framesubtitle{Live Loop}
+  \usebeamercolor{palette primary}
+  \centering
+  \textbf{\textcolor{fg}{\Huge{Demo}}}
 \end{frame}
 
-\subsection{Euklidische Patterns}
 \begin{frame}
-  \frametitle{Konzepte}
-  \framesubtitle{Euklidische Patterns}
+  \usebeamercolor{palette primary}
+  \centering
+  \textbf{\textcolor{fg}{\Huge{Vielen Dank!}}}
 \end{frame}
 
 \end{document}
